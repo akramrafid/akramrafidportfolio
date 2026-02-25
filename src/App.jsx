@@ -8,6 +8,7 @@ import Philosophy from './components/Philosophy'
 import Protocol from './components/Protocol'
 import Services from './components/Services'
 import PolyJute from './components/PolyJute'
+import FeaturedVideo from './components/FeaturedVideo'
 import Resume from './components/Resume'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
@@ -56,6 +57,7 @@ export default function App() {
                 <Philosophy />
                 <Protocol />
                 <Services />
+                <FeaturedVideo />
                 <PolyJute />
                 <Resume />
                 <Contact />
