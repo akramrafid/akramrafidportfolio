@@ -112,6 +112,7 @@ export default function Contact() {
                 {/* Socials */}
                 <div className="contact-elem mt-14 flex items-center justify-center gap-8 border-t border-ivory/6 pt-10">
                     {[
+                        { label: 'WhatsApp', href: 'https://wa.me/8801641414949' },
                         { label: 'GitHub', href: 'https://github.com/akramrafid' },
                         { label: 'Instagram', href: 'https://www.instagram.com/akraam.io/' },
                         { label: 'Twitter / X', href: 'https://x.com/akramrafidrahat' },
