@@ -1,11 +1,14 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
 export default function Terms({ onClose }) {
+    const overlayRef = useRef(null)
+    const panelRef = useRef(null)
+
     useEffect(() => {
         document.body.style.overflow = 'hidden'
-        gsap.fromTo('.terms-overlay', { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-        gsap.fromTo('.terms-panel', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', delay: 0.1 })
+        gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' })
+        gsap.fromTo(panelRef.current, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', delay: 0.1 })
 
         const handleKey = (e) => { if (e.key === 'Escape') onClose() }
         window.addEventListener('keydown', handleKey)
@@ -16,7 +19,7 @@ export default function Terms({ onClose }) {
     }, [onClose])
 
     const close = () => {
-        gsap.to('.terms-overlay', { opacity: 0, duration: 0.25, onComplete: onClose })
+        gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, onComplete: onClose })
     }
 
     const sections = [
@@ -64,11 +67,13 @@ export default function Terms({ onClose }) {
 
     return (
         <div
+            ref={overlayRef}
             className="terms-overlay fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8"
             style={{ backgroundColor: 'rgba(6,6,6,0.88)', backdropFilter: 'blur(12px)' }}
             onClick={close}
         >
             <div
+                ref={panelRef}
                 className="terms-panel relative w-full max-w-3xl max-h-[88vh] overflow-hidden rounded-2xl border border-ivory/10 flex flex-col"
                 style={{ background: 'linear-gradient(160deg, #0f0f0f 0%, #0a0a0a 100%)' }}
                 onClick={e => e.stopPropagation()}

@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react'
 
 export default function Philosophy() {
     const sectionRef = useRef(null)
-    const wordsRef = useRef([])
 
     useEffect(() => {
         import('gsap').then(({ gsap }) => {

@@ -72,17 +72,14 @@ function TypewriterCard() {
     const [log, setLog] = useState([])
 
     useEffect(() => {
-        if (chars < messages[line].length) {
-            const t = setTimeout(() => setChars(c => c + 1), 38)
-            return () => clearTimeout(t)
-        } else {
-            const t = setTimeout(() => {
+        const timeout = chars < messages[line].length
+            ? setTimeout(() => setChars(c => c + 1), 38)
+            : setTimeout(() => {
                 setLog(prev => [...prev.slice(-5), messages[line]])
                 setLine(l => (l + 1) % messages.length)
                 setChars(0)
             }, 1000)
-            return () => clearTimeout(t)
-        }
+        return () => clearTimeout(timeout)
     }, [chars, line])
 
     return (

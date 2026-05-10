@@ -1,12 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { gsap } from 'gsap'
-
-const links = [
-    { label: 'Work', id: '#services' },
-    { label: 'About', id: '#resume' },
-    { label: 'Services', id: '#services' },
-    { label: 'Contact', id: '#contact' },
-]
+import { navLinks } from '../data/navbar'
 
 export default function Navbar() {
     const navRef = useRef(null)
@@ -26,10 +20,10 @@ export default function Navbar() {
         return () => { ctx.revert(); window.removeEventListener('scroll', onScroll) }
     }, [])
 
-    const scrollTo = (id) => {
+    const scrollTo = useCallback((id) => {
         setMenuOpen(false)
         document.querySelector(id)?.scrollIntoView({ behavior: 'smooth' })
-    }
+    }, [])
 
     return (
         <>
@@ -51,7 +45,7 @@ export default function Navbar() {
 
                 {/* Desktop links */}
                 <ul className="hidden md:flex items-center gap-7">
-                    {links.map(({ label, id }) => (
+                    {navLinks.map(({ label, id }) => (
                         <li key={label}>
                             <button
                                 onClick={() => scrollTo(id)}
@@ -77,6 +71,8 @@ export default function Navbar() {
                     className="md:hidden flex flex-col gap-1.5 p-1"
                     onClick={() => setMenuOpen(v => !v)}
                     aria-label="Menu"
+                    aria-expanded={menuOpen}
+                    aria-controls="mobile-menu"
                 >
                     <span className={`block w-5 h-px bg-ivory transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
                     <span className={`block w-5 h-px bg-ivory transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
@@ -85,13 +81,19 @@ export default function Navbar() {
             </nav>
 
             {/* Mobile menu */}
-            <div className={`fixed inset-0 z-40 bg-obsidian/98 flex flex-col items-center justify-center transition-all duration-500 ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+            <div
+                id="mobile-menu"
+                className={`fixed inset-0 z-40 bg-obsidian/95 backdrop-blur-xl flex flex-col items-center justify-center transition-all duration-500 ${menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+                aria-hidden={!menuOpen}
+            >
                 <ul className="flex flex-col items-center gap-8">
-                    {links.map(({ label, id }) => (
+                    {navLinks.map(({ label, id }) => (
                         <li key={label}>
                             <button
                                 onClick={() => scrollTo(id)}
+                                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && scrollTo(id)}
                                 className="font-sans text-4xl font-black text-ivory/40 hover:text-ivory transition-colors duration-300"
+                                tabIndex={menuOpen ? 0 : -1}
                             >
                                 {label}
                             </button>
@@ -100,7 +102,9 @@ export default function Navbar() {
                 </ul>
                 <button
                     onClick={() => scrollTo('#contact')}
+                    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && scrollTo('#contact')}
                     className="mt-12 px-8 py-4 rounded-full bg-champagne text-obsidian font-bold text-lg btn-magnetic"
+                    tabIndex={menuOpen ? 0 : -1}
                 >
                     Hire Me
                 </button>

@@ -96,7 +96,7 @@ export default function Contact() {
                                 ))}
                             </ul>
                             <a
-                                href="mailto:hello.akramrafid@gmail.com"
+                                href="mailto:akramrafid123@gmail.com"
                                 className={`btn-magnetic btn-slide inline-flex items-center justify-center gap-2 w-full py-3 rounded-full text-sm font-bold ${accent
                                     ? 'bg-obsidian text-champagne'
                                     : 'border border-ivory/15 text-ivory hover:border-champagne/40'
