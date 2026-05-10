@@ -14,6 +14,7 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import Terms from './components/Terms'
+import WhatsAppWidget from './components/WhatsAppWidget'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -66,6 +67,8 @@ export default function App() {
                 onPrivacyClick={() => setModal('privacy')}
                 onTermsClick={() => setModal('terms')}
             />
+
+            <WhatsAppWidget />
 
             {/* Legal modals */}
             {modal === 'privacy' && <PrivacyPolicy onClose={() => setModal(null)} />}
