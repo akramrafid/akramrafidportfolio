@@ -22,31 +22,31 @@ function ShufflerCard() {
     }, [])
 
     return (
-        <div className="flex-1 rounded-4xl glass-card p-7 flex flex-col gap-5 min-h-[320px]">
+        <div className="flex-1 rounded-4xl glass-card p-6 md:p-7 flex flex-col gap-5 min-h-[320px]">
             <div>
                 <span className="font-mono text-[10px] text-champagne uppercase tracking-widest">01 — Animation Craft</span>
                 <h3 className="mt-2 font-sans font-bold text-xl text-ivory">Motion-Driven Frontends</h3>
                 <p className="mt-1.5 text-sm text-ivory/40 leading-relaxed">Every interface element moves with weight, purpose, and cinematic timing.</p>
             </div>
-            <div className="relative flex-1" style={{ perspective: '600px' }}>
+            <div className="relative flex-1 min-h-[160px]" style={{ perspective: '600px' }}>
                 {stack.map((item, i) => (
                     <div
                         key={item.label}
-                        className="absolute inset-x-0 border border-ivory/8 bg-slate/30 rounded-2xl p-4 flex items-center justify-between"
+                        className="absolute inset-x-0 border border-ivory/8 bg-slate/30 rounded-2xl p-3 md:p-4 flex items-center justify-between"
                         style={{
-                            top: `${i * 14}px`,
+                            top: `${i * 12}px`,
                             zIndex: stack.length - i,
                             opacity: 1 - i * 0.25,
                             transform: `scale(${1 - i * 0.04})`,
                             transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
                         }}
                     >
-                        <div>
-                            <span className={`font-sans font-semibold text-sm ${item.color}`}>{item.label}</span>
-                            <span className="block font-mono text-[10px] text-ivory/30 mt-0.5">{item.tag}</span>
+                        <div className="overflow-hidden pr-2">
+                            <span className={`block font-sans font-semibold text-[11px] md:text-sm truncate ${item.color}`}>{item.label}</span>
+                            <span className="block font-mono text-[9px] md:text-[10px] text-ivory/30 mt-0.5 truncate">{item.tag}</span>
                         </div>
-                        <div className="w-8 h-8 rounded-full border border-ivory/10 flex items-center justify-center">
-                            <span className="text-xs text-ivory/40">{i + 1}</span>
+                        <div className="w-6 h-6 md:w-8 md:h-8 rounded-full border border-ivory/10 flex items-center justify-center flex-shrink-0">
+                            <span className="text-[10px] md:text-xs text-ivory/40">{i + 1}</span>
                         </div>
                     </div>
                 ))}
@@ -70,20 +70,37 @@ function TypewriterCard() {
     const [line, setLine] = useState(0)
     const [chars, setChars] = useState(0)
     const [log, setLog] = useState([])
+    const [isMobile, setIsMobile] = useState(false)
 
     useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 768)
+        check()
+        window.addEventListener('resize', check)
+        return () => window.removeEventListener('resize', check)
+    }, [])
+
+    useEffect(() => {
+        if (isMobile) {
+            const timeout = setTimeout(() => {
+                setLog(prev => [...prev.slice(-4), messages[line]])
+                setLine(l => (l + 1) % messages.length)
+                setChars(0)
+            }, 1000)
+            return () => clearTimeout(timeout)
+        }
+
         const timeout = chars < messages[line].length
             ? setTimeout(() => setChars(c => c + 1), 38)
             : setTimeout(() => {
-                setLog(prev => [...prev.slice(-5), messages[line]])
+                setLog(prev => [...prev.slice(-4), messages[line]])
                 setLine(l => (l + 1) % messages.length)
                 setChars(0)
             }, 1000)
         return () => clearTimeout(timeout)
-    }, [chars, line])
+    }, [chars, line, isMobile])
 
     return (
-        <div className="flex-1 rounded-4xl glass-card p-7 flex flex-col gap-5 min-h-[320px]">
+        <div className="flex-1 rounded-4xl glass-card p-6 md:p-7 flex flex-col gap-5 min-h-[320px]">
             <div>
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-champagne pulse-dot" />
@@ -92,13 +109,15 @@ function TypewriterCard() {
                 <h3 className="mt-2 font-sans font-bold text-xl text-ivory">Pixel-Perfect Engineering</h3>
                 <p className="mt-1.5 text-sm text-ivory/40 leading-relaxed">Every component built to spec. No drift. No shortcuts.</p>
             </div>
-            <div className="flex-1 bg-obsidian/80 rounded-2xl p-4 font-mono text-xs overflow-hidden border border-ivory/5">
-                {log.map((l, i) => (
-                    <div key={i} className="text-ivory/25 leading-6">{l}</div>
-                ))}
-                <div className="text-emerald-400 leading-6">
-                    {messages[line].slice(0, chars)}
-                    <span className="text-champagne cursor-blink">▌</span>
+            <div className="h-[150px] md:h-auto md:flex-1 bg-obsidian/80 rounded-2xl p-4 font-mono text-xs overflow-hidden border border-ivory/5 flex flex-col justify-end">
+                <div className="flex flex-col justify-end">
+                    {log.map((l, i) => (
+                        <div key={i} className="text-ivory/25 leading-6">{l}</div>
+                    ))}
+                    <div className="text-emerald-400 leading-6">
+                        {isMobile ? messages[line] : messages[line].slice(0, chars)}
+                        <span className="text-champagne cursor-blink">▌</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -212,10 +231,10 @@ export default function Features() {
                     <em className="font-serif font-normal text-champagne not-italic">craft.</em>
                 </h2>
             </div>
-            <div className="grid grid-cols-2 md:flex md:flex-row gap-4 md:gap-5">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-5">
                 <div className="feat-card flex-1"><ShufflerCard /></div>
                 <div className="feat-card flex-1"><TypewriterCard /></div>
-                <div className="feat-card col-span-2 md:flex-1"><SchedulerCard /></div>
+                <div className="feat-card flex-1"><SchedulerCard /></div>
             </div>
         </section>
     )
