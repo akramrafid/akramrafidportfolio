@@ -96,7 +96,9 @@ export default function Contact() {
                                 ))}
                             </ul>
                             <a
-                                href="mailto:akramrafid123@gmail.com"
+                                href={`https://wa.me/8801641414949?text=Hello%20Akram!%20I'm%20interested%20in%20the%20${label}%20plan.`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className={`btn-magnetic btn-slide inline-flex items-center justify-center gap-2 w-full py-3 rounded-full text-sm font-bold ${accent
                                     ? 'bg-obsidian text-champagne'
                                     : 'border border-ivory/15 text-ivory hover:border-champagne/40'
