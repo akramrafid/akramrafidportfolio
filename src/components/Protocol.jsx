@@ -143,7 +143,7 @@ export default function Protocol() {
                 </h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+            <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-5">
                 {steps.map(({ num, title, desc, anim, bg }) => (
                     <div
                         key={num}
@@ -233,7 +233,7 @@ export default function Protocol() {
                 </a>
 
                 {/* ── Bottom 3 cards ── */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="flex flex-col md:grid md:grid-cols-3 gap-4">
 
                     {/* StudyHub */}
                     <a
